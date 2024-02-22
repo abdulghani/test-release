@@ -1,0 +1,28 @@
+name: Create a pre-release
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create-pre-release:
+    if: ${{ startsWith(github.event.head_commit.message, 'release v') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Extract version
+        id: extract_version
+        run: |
+          echo "::set-output name=version::$(echo ${{ steps.commit_message.outputs.message }} | sed -n 's/^release \([^ ]*\)/\1/p')"
+      - name: Echo extracted version
+        run: |
+          echo ${{ steps.extract_version.outputs.version }}
+      - name: Create a pre-release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ steps.extract_version.outputs.version }}
+          release_name: Pre-release ${{ steps.extract_version.outputs.version }}
+          prerelease: true
+          draft: false
+          token: ${{ secrets.GITHUB_TOKEN }}
