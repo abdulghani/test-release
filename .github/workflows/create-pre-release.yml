@@ -26,5 +26,7 @@ jobs:
         with:
           tag_name: ${{ steps.extract_version.outputs.version }}
           release_name: Pre-release ${{ steps.extract_version.outputs.version }}
+          body: |
+            Auto generated pre-release for ${{ steps.extract_version.outputs.version }}.
           prerelease: true
           draft: false
