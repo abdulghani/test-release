@@ -26,4 +26,4 @@ jobs:
           release_name: Pre-release ${{ steps.extract_version.outputs.version }}
           prerelease: true
           draft: false
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.TEST_TOKEN }}
