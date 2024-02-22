@@ -17,7 +17,8 @@ jobs:
           echo "version=$(echo ${{ steps.commit_message.outputs.message }} | sed -n 's/^release \([^ ]*\)/\1/p')" >> $GITHUB_OUTPUT
       - name: Echo extracted version
         run: |
-          echo ${{ steps.extract_version.outputs.version }}
+          echo "${{ steps.extract_version.outputs.version }}"
+          echo "hello world"
       - name: Create a pre-release
         uses: actions/create-release@v1
         with:
