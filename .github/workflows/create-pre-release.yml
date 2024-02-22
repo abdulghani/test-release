@@ -21,9 +21,10 @@ jobs:
           echo "${{ github.event.head_commit.message }}"
       - name: Create a pre-release
         uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.TEST_TOKEN }}
         with:
           tag_name: ${{ steps.extract_version.outputs.version }}
           release_name: Pre-release ${{ steps.extract_version.outputs.version }}
           prerelease: true
           draft: false
-          token: ${{ secrets.TEST_TOKEN }}
