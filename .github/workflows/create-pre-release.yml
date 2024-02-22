@@ -14,7 +14,7 @@ jobs:
       - name: Extract version
         id: extract_version
         run: |
-          echo "::set-output name=version::$(echo ${{ steps.commit_message.outputs.message }} | sed -n 's/^release \([^ ]*\)/\1/p')"
+          echo "version=$(echo ${{ steps.commit_message.outputs.message }} | sed -n 's/^release \([^ ]*\)/\1/p')" >> $GITHUB_OUTPUT
       - name: Echo extracted version
         run: |
           echo ${{ steps.extract_version.outputs.version }}
