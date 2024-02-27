@@ -1,0 +1,59 @@
+name: Create a pre-release
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "BL version"
+        type: string
+        required: false
+        default: "v3.381.0"
+      environment:
+        description: "Deployment environment"
+        type: choice
+        required: true
+        default: "staging"
+        options:
+          - staging
+          - production
+      admin_email:
+        description: "Admin email"
+        type: string
+        required: true
+      tenant_name:
+        description: "Tenant label"
+        type: string
+        required: true
+
+jobs:
+  create-tenant:
+    runs-on:
+      - ubuntu-latest
+    steps:
+      - name: Normalize tenant-name
+        id: extract_label
+        run: |
+          echo "label=$(echo "${{ github.event.inputs.tenant_name }}" | sed 's/\(.\)\([A-Z0-9]\)/\1-\2/g' | tr '[:upper:]' '[:lower:]' | sed 's/ /-/g')" >> $GITHUB_OUTPUT
+          echo "hostname=$(echo "${{ github.event.inputs.tenant_name }}" | sed 's/\(.\)\([A-Z0-9]\)/\1-\2/g' | tr '[:upper:]' '[:lower:]' | sed 's/ /-/g' | sed 's/-//g')" >> $GITHUB_OUTPUT
+      - name: Echo normalized tenant-name
+        run: |
+          echo "${{ steps.extract_label.outputs.label }}"
+          echo "${{ steps.extract_label.outputs.hostname }}"
+          echo "${{ github.event.inputs.tenant_name }}"
+      - name: Validate email input
+        run: |
+          (echo "${{ github.event.inputs.admin_email }}" | grep -E '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$') && echo "Email valid" || (echo "Email invalid (${{ github.event.inputs.admin_email }})"; exit 1)
+      - name: Create a tenant in workspace
+        env:
+          SUDO_EMAIL: ${{ secrets.WORKSPACE_SUDO_EMAIL }}
+          SUDO_PASSWORD: ${{ secrets.WORKSPACE_SUDO_PASSWORD }}
+          VERSION: ${{ github.event.inputs.version }}
+          ENVIRONMENT: ${{ github.event.inputs.environment }}
+          REGION: "AP"
+          ADMIN_EMAIL: ${{ github.event.inputs.admin_email }}
+          LABEL: ${{ steps.extract_label.outputs.label }}
+          HOSTNAME: ${{ steps.extract_label.outputs.hostname }}
+        run: |
+          curl 'https://workspace.necto-api.dev/api/tenants/admin-new' \
+            -H 'Content-Type: application/json' \
+            --data-raw $'{"hostname":"$HOSTNAME","sudo_email":"$SUDO_EMAIL","sudo_password":"${{ secrets.SUDO_PASSWORD }}","entitlements":{"jpm":{"balances":true,"transactions":true,"payments":true,"status":true,"signatories":true}},"label":"$LABEL","region":"$REGION","environment":"$ENVIRONMENT","headless":false,"banklync_version":"$VERSION","banklync_admin_email":"$ADMIN_EMAIL","banklync_license":""}' \
+            --compressed
