@@ -1,4 +1,4 @@
-name: Create a pre-release
+name: Create a tenant
 on:
   workflow_dispatch:
     inputs:
