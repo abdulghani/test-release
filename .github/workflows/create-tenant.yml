@@ -36,9 +36,9 @@ jobs:
           echo "hostname=$(echo "${{ github.event.inputs.tenant_name }}" | sed 's/\(.\)\([A-Z0-9]\)/\1-\2/g' | tr '[:upper:]' '[:lower:]' | sed 's/ /-/g' | sed 's/-//g')" >> $GITHUB_OUTPUT
       - name: Echo normalized tenant-name
         run: |
-          echo "${{ steps.extract_label.outputs.label }}"
-          echo "${{ steps.extract_label.outputs.hostname }}"
-          echo "${{ github.event.inputs.tenant_name }}"
+          echo "label (${{ steps.extract_label.outputs.label }})"
+          echo "hostname (${{ steps.extract_label.outputs.hostname }})"
+          echo "original (${{ github.event.inputs.tenant_name }})"
       - name: Validate email input
         run: |
           (echo "${{ github.event.inputs.admin_email }}" | grep -E '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$') && echo "Email valid" || (echo "Email invalid (${{ github.event.inputs.admin_email }})"; exit 1)
