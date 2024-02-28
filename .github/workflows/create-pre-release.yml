@@ -30,20 +30,3 @@ jobs:
             Auto generated pre-release for ${{ steps.extract_version.outputs.version }}.
           prerelease: true
           draft: false
-  create-tenant:
-    runs-on: ubuntu-latest
-    needs:
-      - create-pre-release
-    env:
-      SUDO_PASSWORD: ${{ secrets.SUDO_PASSWORD }}
-      VERSION: "v3.381.0"
-      ENVIRONMENT: "staging"
-      REGION: "AP"
-      ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
-    steps:
-      - name: Create a tenant in workspace
-        run: |
-          curl 'https://workspace.necto-api.dev/api/tenants/admin-new' \
-            -H 'Content-Type: application/json' \
-            --data-raw $'{"hostname":"testghani","sudo_email":"$ADMIN_EMAIL","sudo_password":"${{ secrets.SUDO_PASSWORD }}","entitlements":{"jpm":{"balances":true,"transactions":true,"payments":true,"status":true,"signatories":true}},"label":"test-ghani","region":"$REGION","environment":"$ENVIRONMENT","headless":false,"banklync_version":"$VERSION","banklync_admin_email":"$ADMIN_EMAIL","banklync_license":""}' \
-            --compressed

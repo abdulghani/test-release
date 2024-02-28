@@ -1,0 +1,17 @@
+name: Build images
+on:
+  release:
+    types:
+      - published
+      - prereleased
+
+jobs:
+  build-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: get version
+        id: extract_version
+        run: |
+          echo "${{ github.event.release.tag_name }}"
+          echo "${{ github.event.release.tag_name }}" | sed -n 's/^v\([^ ]*\)/\1/p'
+          echo "version=$(echo "${{ github.event.release.tag_name }}" | sed -n 's/^v\([^ ]*\)/\1/p')" >> $GITHUB_ENV
