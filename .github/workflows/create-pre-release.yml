@@ -55,11 +55,9 @@ jobs:
           echo "ITERATION=$(jq ".iteration" pre-release-number.json)" >> $GITHUB_ENV
       - name: Outputs release name
         id: release_name
-        env:
-          ITERATION: ${{ steps.iteration_number.outputs.ITERATION }}
         run: |
-          echo "Pre-release ${{ steps.current_year.outputs.year }}.${{ steps.current_year.outputs.month }}.$iteration"
-          echo "RELEASE_NAME=$(echo "Pre-release ${{ steps.current_year.outputs.year }}.${{ steps.current_year.outputs.month }}.$iteration")" >> $GITHUB_ENV
+          echo "Pre-release ${{ steps.current_year.outputs.year }}.${{ steps.current_year.outputs.month }}.$ITERATION"
+          echo "RELEASE_NAME=$(echo "Pre-release ${{ steps.current_year.outputs.year }}.${{ steps.current_year.outputs.month }}.$ITERATION")" >> $GITHUB_ENV
       - name: Upload iteration artifact
         run: |
           aws s3 cp ./pre-release-number.json s3://pre-release-number/pre-release-number.json
@@ -69,8 +67,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.TEST_TOKEN }}
           YEAR: ${{ steps.current_year.outputs.year }}
           MONTH: ${{ steps.current_year.outputs.month }}
-          ITERATION: ${{ steps.iteration_number.outputs.iteration }}
-          RELEASE_NAME: ${{ steps.release_name.outputs.RELEASE_NAME }}
         with:
           tag_name: ${{ steps.extract_version.outputs.version }}
           release_name: Pre-release ${{ steps.release_name.outputs.RELEASE_NAME }}
