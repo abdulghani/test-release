@@ -1,5 +1,11 @@
 name: Create a pre-release
 on:
+  workflow_dispatch:
+    inputs:
+      version_tag:
+        description: "Version tag"
+        type: string
+        required: true
   push:
     branches:
       - main
@@ -22,7 +28,13 @@ jobs:
       - name: Extract version
         id: extract_version
         run: |
-          echo "version=$(echo "${{ github.event.head_commit.message }}" | sed -n 's/^release \([^ ]*\)/\1/p')" >> $GITHUB_OUTPUT
+          if [ "${{ inputs.version_tag }}" != "" ]; then
+            echo "TAKING VERSION FROM INPUT (${{ inputs.version_tag }})"
+            echo "version=${{ inputs.version_tag }}" >> $GITHUB_OUTPUT
+          else 
+            echo "TAKING VERSION FROM COMMIT MESSAGE (${{ github.event.head_commit.message }})"
+            echo "version=$(echo "${{ github.event.head_commit.message }}" | sed -n 's/^release \([^ ]*\)/\1/p')" >> $GITHUB_OUTPUT
+          fi
       - name: Echo extracted version
         run: |
           echo "${{ steps.extract_version.outputs.version }}"
