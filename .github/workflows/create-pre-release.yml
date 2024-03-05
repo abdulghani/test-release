@@ -12,7 +12,6 @@ on:
 
 jobs:
   create-pre-release:
-    if: ${{ startsWith(github.event.head_commit.message, 'release v') }}
     runs-on: ubuntu-latest
     steps:
       - name: Configure AWS credentials
@@ -31,9 +30,12 @@ jobs:
           if [ "${{ inputs.version_tag }}" != "" ]; then
             echo "TAKING VERSION FROM INPUT (${{ inputs.version_tag }})"
             echo "version=${{ inputs.version_tag }}" >> $GITHUB_OUTPUT
-          else 
+          elif [ "$(echo "${{ github.event.head_commit.message }}" | grep -c 'release v')" -eq 1 ]; then 
             echo "TAKING VERSION FROM COMMIT MESSAGE (${{ github.event.head_commit.message }})"
             echo "version=$(echo "${{ github.event.head_commit.message }}" | sed -n 's/^release \([^ ]*\)/\1/p')" >> $GITHUB_OUTPUT
+          else
+            echo "Invalid invocation (not from a release commit or no version tag provided)"
+            exit 1
           fi
       - name: Echo extracted version
         run: |
