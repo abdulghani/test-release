@@ -15,6 +15,8 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-southeast-1
+      - name: "Setup jq"
+        uses: dcarbone/install-jq-action@v2
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Extract version
@@ -34,6 +36,21 @@ jobs:
         run: |
           aws s3 cp s3://pre-release-number/pre-release-number.json ./pre-release-number.json
           cat ./pre-release-number.json
+      - name: Determine iteration number
+        env:
+          YEAR: ${{ steps.current_year.outputs.year }}
+          MONTH: ${{ steps.current_year.outputs.month }}
+        run: |
+          if [ "$YEAR" == "$(jq '.year' pre-release-number.json)" ] && [ "$MONTH" == "$(jq '.month' pre-release-number.json)" ]; then
+            echo "Incrementing iteration number"
+            jq '.iteration += 1' pre-release-number.json > pre-release-number.json.tmp
+            mv pre-release-number.json.tmp pre-release-number.json
+          else
+            echo "Resetting iteration number"
+            jq '.year = $YEAR | .month = $MONTH | .iteration = 1' pre-release-number.json > pre-release-number.json.tmp
+            mv pre-release-number.json.tmp pre-release-number.json
+          fi
+          cat pre-release-number.json
       - name: Outputs release name
         if: always()
         run: |
