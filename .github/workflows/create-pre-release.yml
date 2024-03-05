@@ -24,13 +24,14 @@ jobs:
         uses: Kaven-Universe/github-action-current-date-time@v1.4.0
         with:
           format: "YYYY"
-      - uses: actions/download-artifact@v4
-        with:
-          name: pre_release_iteration_number
-      - name: Read artifact release number
-        run: |
-          cat pre_release_iteration_number.txt
+      # - uses: actions/download-artifact@v4
+      #   with:
+      #     name: pre_release_iteration_number
+      # - name: Read artifact release number
+      #   run: |
+      #     cat pre_release_iteration_number.txt
       - name: Outputs release name
+        if: always()
         run: |
           echo "Pre-release ${{ steps.current_year.outputs.year }}.${{ steps.current_year.outputs.month }} (${{ steps.extract_version.outputs.version }})"
           echo "Run number (${{ github.run_number }})"
