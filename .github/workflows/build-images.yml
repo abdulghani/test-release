@@ -11,6 +11,7 @@ jobs:
       - name: get version
         id: extract_version
         run: |
+          echo "${{ github.event.release.name }}"
           echo "${{ github.event.release.tag_name }}"
           echo "${{ github.event.release.tag_name }}"
           echo "${{ github.event.release.tag_name }}" | sed -n 's/^v\([^ ]*\)/\1/p'
