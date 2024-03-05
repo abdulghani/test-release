@@ -69,8 +69,9 @@ jobs:
           MONTH: ${{ steps.current_year.outputs.month }}
         with:
           tag_name: ${{ steps.extract_version.outputs.version }}
-          release_name: Pre-release ${{ steps.release_name.outputs.RELEASE_NAME }}
+          release_name: Pre-release ${{ env.RELEASE_NAME }}
           body: |
+            Pre-release ${{ env.RELEASE_NAME }}
             Auto generated pre-release for ${{ steps.extract_version.outputs.version }}.
           prerelease: true
           draft: false
