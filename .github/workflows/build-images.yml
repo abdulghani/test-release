@@ -7,6 +7,8 @@ on:
 jobs:
   build-image:
     runs-on: ubuntu-latest
+    outputs:
+      release_number: ${{ steps.validate_release_name.outputs.RELEASE_NUMBER }}
     steps:
       - name: get version
         id: extract_version
@@ -26,3 +28,14 @@ jobs:
           else
             echo "Release name is invalid (${{ github.event.release.name}})"
           fi
+
+  create-tenant-staging-instance:
+    needs:
+      - build-image
+    runs-on: ubuntu-latest
+    env:
+      TENANT_NAME: "stage-${{ needs.build-image.outputs.release_number }}"
+    steps:
+      - name: Print tenant name
+        run: |
+          echo "Tenant name: $TENANT_NAME"
