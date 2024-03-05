@@ -52,12 +52,12 @@ jobs:
             mv pre-release-number.json.tmp pre-release-number.json
           fi
           cat pre-release-number.json
-          echo "iteration=$(jq '.iteration' pre-release-number.json)" >> $GITHUB_ENV
+          echo "iteration=$(echo "$(jq '.iteration' pre-release-number.json)")" >> $GITHUB_ENV
       - name: Outputs release name
         id: release_name
         run: |
           echo "Pre-release ${{ steps.current_year.outputs.year }}.${{ steps.current_year.outputs.month }}.${{ steps.iteration_number.outputs.iteration }}"
-          echo "release_name=$(echo 'Pre-release ${{ steps.current_year.outputs.year }}.${{ steps.current_year.outputs.month }}.${{ steps.iteration_number.outputs.iteration }}')" >> $GITHUB_ENV
+          echo "release_name=$(echo "Pre-release ${{ steps.current_year.outputs.year }}.${{ steps.current_year.outputs.month }}.${{ steps.iteration_number.outputs.iteration }}"")" >> $GITHUB_ENV
       - name: Upload iteration artifact
         run: |
           aws s3 cp ./pre-release-number.json s3://pre-release-number/pre-release-number.json
