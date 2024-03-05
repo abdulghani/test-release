@@ -37,6 +37,7 @@ jobs:
           aws s3 cp s3://pre-release-number/pre-release-number.json ./pre-release-number.json
           cat ./pre-release-number.json
       - name: Determine iteration number
+        id: iteration_number
         env:
           YEAR: ${{ steps.current_year.outputs.year }}
           MONTH: ${{ steps.current_year.outputs.month }}
@@ -51,6 +52,7 @@ jobs:
             mv pre-release-number.json.tmp pre-release-number.json
           fi
           cat pre-release-number.json
+          echo "iteration=$(jq '.iteration' pre-release-number.json)" >> $GITHUB_ENV
       - name: Outputs release name
         if: always()
         run: |
@@ -64,9 +66,12 @@ jobs:
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.TEST_TOKEN }}
+          YEAR: ${{ steps.current_year.outputs.year }}
+          MONTH: ${{ steps.current_year.outputs.month }}
+          ITERATION: ${{ steps.iteration_number.outputs.iteration }}
         with:
           tag_name: ${{ steps.extract_version.outputs.version }}
-          release_name: Pre-release ${{ steps.extract_version.outputs.version }}
+          release_name: Pre-release $YEAR.$MONTH.$ITERATION
           body: |
             Auto generated pre-release for ${{ steps.extract_version.outputs.version }}.
           prerelease: true
