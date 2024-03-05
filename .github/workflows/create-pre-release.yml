@@ -19,6 +19,19 @@ jobs:
         run: |
           echo "${{ steps.extract_version.outputs.version }}"
           echo "${{ github.event.head_commit.message }}"
+      - name: Get current year
+        id: current_year
+        uses: Kaven-Universe/github-action-current-date-time@v1.4.0
+        with:
+          format: "YYYY"
+      - name: Get current month
+        id: current_month
+        uses: Kaven-Universe/github-action-current-date-time@v1.4.0
+        with:
+          format: "MM"
+      - name: Print current release name
+        run: |
+          echo "Pre-release (${{ steps.current_year.outputs.date }}.${{ steps.current_month.outputs.date }})"
       - name: Create a pre-release
         uses: actions/create-release@v1
         env:
