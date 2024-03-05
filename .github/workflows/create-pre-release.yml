@@ -27,6 +27,7 @@ jobs:
       - name: Outputs release name
         run: |
           echo "Pre-release ${{ steps.current_year.outputs.year }}.${{ steps.current_year.outputs.month }} (${{ steps.extract_version.outputs.version }})"
+          echo "Run number (${{ github.run_number }})"
       - name: Create a pre-release
         uses: actions/create-release@v1
         env:
