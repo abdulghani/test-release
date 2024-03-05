@@ -58,7 +58,7 @@ jobs:
         env:
           ITERATION: ${{ steps.iteration_number.outputs.iteration }}
         run: |
-          echo "Pre-release ${{ steps.current_year.outputs.year }}.${{ steps.current_year.outputs.month }}.${{ steps.iteration_number.outputs.iteration }}"
+          echo "Pre-release ${{ steps.current_year.outputs.year }}.${{ steps.current_year.outputs.month }}.$iteration"
           echo "release_name=$(echo "Pre-release ${{ steps.current_year.outputs.year }}.${{ steps.current_year.outputs.month }}.$iteration")" >> $GITHUB_ENV
       - name: Upload iteration artifact
         run: |
