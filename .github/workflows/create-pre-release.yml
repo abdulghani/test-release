@@ -56,7 +56,7 @@ jobs:
       - name: Outputs release name
         id: release_name
         run: |
-          echo "Pre-release ${{ steps.current_year.outputs.year }}.${{ steps.current_year.outputs.month }}.$ITERATION"
+          echo "Pre-release ${{ steps.current_year.outputs.year }}.${{ steps.current_year.outputs.month }}.${{ steps.iteration_number.outputs.ITERATION }}"
           echo "RELEASE_NAME=$(echo "Pre-release ${{ steps.current_year.outputs.year }}.${{ steps.current_year.outputs.month }}.${{ steps.iteration_number.outputs.ITERATION }}")" >> $GITHUB_OUTPUT
       - name: Upload iteration artifact
         run: |
