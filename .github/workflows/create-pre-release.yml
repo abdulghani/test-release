@@ -48,11 +48,7 @@ jobs:
             mv pre-release-number.json.tmp pre-release-number.json
           else
             echo "Resetting iteration number"
-            jq '.year = $YEAR' pre-release-number.json > pre-release-number.json.tmp
-            mv pre-release-number.json.tmp pre-release-number.json
-            jq '.month = $MONTH' pre-release-number.json > pre-release-number.json.tmp
-            mv pre-release-number.json.tmp pre-release-number.json
-            jq '.iteration = 1' pre-release-number.json > pre-release-number.json.tmp
+            jq --arg YEAR ${YEAR} --arg MONTH ${MONTH} '.year = $YEAR | .month = $MONTH | .iteration = 1' pre-release-number.json > pre-release-number.json.tmp
             mv pre-release-number.json.tmp pre-release-number.json
           fi
           cat pre-release-number.json
