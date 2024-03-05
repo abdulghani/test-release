@@ -53,11 +53,6 @@ jobs:
           fi
           cat pre-release-number.json
           echo "ITERATION=$(jq ".iteration" pre-release-number.json)" >> $GITHUB_OUTPUT
-      - name: Outputs release name
-        id: release_name
-        run: |
-          echo "Pre-release ${{ steps.current_year.outputs.year }}.${{ steps.current_year.outputs.month }}.${{ steps.iteration_number.outputs.ITERATION }}"
-          echo "RELEASE_NAME=$(echo "Pre-release ${{ steps.current_year.outputs.year }}.${{ steps.current_year.outputs.month }}.${{ steps.iteration_number.outputs.ITERATION }}")" >> $GITHUB_OUTPUT
       - name: Upload iteration artifact
         run: |
           aws s3 cp ./pre-release-number.json s3://pre-release-number/pre-release-number.json
@@ -68,10 +63,9 @@ jobs:
           YEAR: ${{ steps.current_year.outputs.year }}
           MONTH: ${{ steps.current_year.outputs.month }}
           ITERATION: ${{ steps.iteration_number.outputs.ITERATION }}
-          RELEASE_NAME: ${{ steps.release_name.outputs.RELEASE_NAME }}
         with:
           tag_name: ${{ steps.extract_version.outputs.version }}
-          release_name: Pre-release ${{ env.RELEASE_NAME }}
+          release_name: Pre-release ${{ env.YEAR }}.${{ env.MONTH }}.${{ env.ITERATION }}
           body: |
             Auto generated pre-release for ${{ steps.extract_version.outputs.version }}.
           prerelease: true
