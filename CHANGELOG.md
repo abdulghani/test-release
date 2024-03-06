@@ -1,3 +1,12 @@
+## [1.5.1](https://github.com/abdulghani/test-release/compare/v1.5.0...v1.5.1) (2024-03-06)
+
+
+### Bug Fixes
+
+* update extract release number script ([69f7269](https://github.com/abdulghani/test-release/commit/69f72695e1d10cbda65f5254d98280751ca92647))
+
+
+
 # [1.5.0](https://github.com/abdulghani/test-release/compare/v1.4.1...v1.5.0) (2024-03-06)
 
 
@@ -42,15 +51,6 @@
 * update job criteria ([2720ff1](https://github.com/abdulghani/test-release/commit/2720ff11bed7fc40549e2968f1fc5ee317615af5))
 * update job criteria ([3f035a7](https://github.com/abdulghani/test-release/commit/3f035a7137dfd09fcf93d0a7813e517621189c33))
 * update version commit, match workflow invocation ([26bcb33](https://github.com/abdulghani/test-release/commit/26bcb3397ecf2f052447d269b323f5c21d3875b3))
-
-
-
-## [1.3.1](https://github.com/abdulghani/test-release/compare/v1.3.0...v1.3.1) (2024-03-06)
-
-
-### Bug Fixes
-
-* changelog shouldn't have previous release changes ([e2e0100](https://github.com/abdulghani/test-release/commit/e2e01006775b1ac6548b1f0a6d741304613e1135))
 
 
 
