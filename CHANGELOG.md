@@ -1,3 +1,12 @@
+## [1.3.1](https://github.com/abdulghani/test-release/compare/v1.3.0...v1.3.1) (2024-03-06)
+
+
+### Bug Fixes
+
+* changelog shouldn't have previous release changes ([e2e0100](https://github.com/abdulghani/test-release/commit/e2e01006775b1ac6548b1f0a6d741304613e1135))
+
+
+
 # [1.3.0](https://github.com/abdulghani/test-release/compare/v1.0.47...v1.3.0) (2024-03-06)
 
 
@@ -23,10 +32,6 @@
 
 
 ## [1.0.45](https://github.com/abdulghani/test-release/compare/v1.0.44...v1.0.45) (2024-03-05)
-
-
-
-## [1.0.44](https://github.com/abdulghani/test-release/compare/v1.0.43...v1.0.44) (2024-03-05)
 
 
 
