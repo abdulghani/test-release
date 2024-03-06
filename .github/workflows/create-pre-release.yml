@@ -43,6 +43,7 @@ jobs:
           github_token: ${{ secrets.TEST_TOKEN }}
           output_file: "false"
           git-message: "release {version}"
+          create-summary: "true"
       - name: Extract version
         id: extract_version
         run: |
