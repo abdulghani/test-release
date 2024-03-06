@@ -14,6 +14,7 @@ on:
 jobs:
   create-pre-release:
     runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'release v')"
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -25,23 +26,25 @@ jobs:
         uses: dcarbone/install-jq-action@v2
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Bump version
+        id: bump_version
+        uses: TriPSs/conventional-changelog-action@v5
+        with:
+          github_token: ${{ secrets.TEST_TOKEN }}
+          output_file: "false"
+          skip-tag: "true"
+          git-message: "release v${version}"
       - name: Extract version
         id: extract_version
         run: |
-          if [ "${{ inputs.version_tag }}" != "" ]; then
-            echo "TAKING VERSION FROM INPUT (${{ inputs.version_tag }})"
-            echo "version=${{ inputs.version_tag }}" >> $GITHUB_OUTPUT
-          elif [ "$(echo "${{ github.event.head_commit.message }}" | grep -c 'release v')" -eq 1 ]; then 
-            echo "TAKING VERSION FROM COMMIT MESSAGE (${{ github.event.head_commit.message }})"
-            echo "version=$(echo "${{ github.event.head_commit.message }}" | sed -n 's/^release \([^ ]*\)/\1/p')" >> $GITHUB_OUTPUT
-          else
-            echo "Invalid invocation (not from a release commit or no version tag provided)"
-            exit 1
-          fi
+          echo "Current version $(jq -r '.version' package.json)"
+          echo "version=$(jq -r '.version' package.json)" >> $GITHUB_OUTPUT
       - name: Echo extracted version
         run: |
           echo "${{ steps.extract_version.outputs.version }}"
           echo "${{ github.event.head_commit.message }}"
+          echo "CHANGELOG"
+          echo "${{ steps.bump_version.outputs.clean_changelog }}"
       - name: Get current year
         id: current_year
         uses: Kaven-Universe/github-action-current-date-time@v1.4.0
