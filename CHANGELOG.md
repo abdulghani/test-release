@@ -1,3 +1,12 @@
+## [1.5.2](https://github.com/abdulghani/test-release/compare/v1.5.1...v1.5.2) (2024-03-06)
+
+
+### Bug Fixes
+
+* update extract release number script ([ae1f91f](https://github.com/abdulghani/test-release/commit/ae1f91fdece1a850547c8b51bcc77f1de158244c))
+
+
+
 ## [1.5.1](https://github.com/abdulghani/test-release/compare/v1.5.0...v1.5.1) (2024-03-06)
 
 
@@ -37,20 +46,6 @@
 ### Features
 
 * update changelog add ticket name ([7c85881](https://github.com/abdulghani/test-release/commit/7c858810a74054947f55d8ca2a5046a7921bf084))
-
-
-
-## [1.3.2](https://github.com/abdulghani/test-release/compare/v1.3.1...v1.3.2) (2024-03-06)
-
-
-### Bug Fixes
-
-* add change from BC-1101 ([056f9a0](https://github.com/abdulghani/test-release/commit/056f9a0442fb415c27526af90c2232fd57fbc0cf))
-* escape quote ([768a6a4](https://github.com/abdulghani/test-release/commit/768a6a42c37f4e310a5cf6d5170c154156714ab9))
-* update job criteria ([498c245](https://github.com/abdulghani/test-release/commit/498c245f1c55e451adb958c40342ce273be16fee))
-* update job criteria ([2720ff1](https://github.com/abdulghani/test-release/commit/2720ff11bed7fc40549e2968f1fc5ee317615af5))
-* update job criteria ([3f035a7](https://github.com/abdulghani/test-release/commit/3f035a7137dfd09fcf93d0a7813e517621189c33))
-* update version commit, match workflow invocation ([26bcb33](https://github.com/abdulghani/test-release/commit/26bcb3397ecf2f052447d269b323f5c21d3875b3))
 
 
 
