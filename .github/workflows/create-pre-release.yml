@@ -15,7 +15,7 @@ jobs:
   create-pre-release:
     runs-on: ubuntu-latest
     # MATCH IF THE COMMIT MESSAGE CONTAINS "merge pull request #" AND "feature/BC-" OR "merge branch 'feature/BC-' into main"
-    if: "contains(github.event.head_commit.message, 'merge pull request \#') && contains(github.event.head_commit.message, 'feature/BC-')"
+    if: "contains(github.event.head_commit.message, 'merge pull request #') && contains(github.event.head_commit.message, 'feature/BC-')"
     permissions:
       contents: write
     steps:
