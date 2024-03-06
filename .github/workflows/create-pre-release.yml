@@ -32,9 +32,9 @@ jobs:
       - name: Extract branch ticket name
         id: ticket_name
         run: |
-          echo "Branch name: ${{ github.event.head_commit.message }}"
-          echo "Ticket name: $(echo "${{ github.event.head_commit.message }}" | grep -o 'BC-[0-9]\+)"
-          echo "TICKET_NAME=$(echo "${{ github.event.head_commit.message }}" | grep -o 'BC-[0-9]\+)" >> $GITHUB_OUTPUT
+          echo "Branch name:\n${{ github.event.head_commit.message }}"
+          echo "Ticket name: $(echo "${{ github.event.head_commit.message }}" | grep -o 'BC-[0-9]\+' | sort -u)"
+          echo "TICKET_NAME=$(echo "${{ github.event.head_commit.message }}" | grep -o 'BC-[0-9]\+' | sort -u)" >> $GITHUB_OUTPUT
       - name: Bump version
         id: bump_version
         uses: TriPSs/conventional-changelog-action@v5
