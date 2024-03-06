@@ -23,8 +23,8 @@ jobs:
         run: |
           if [ "$(echo "${{ github.event.release.name }}" | grep -c 'Pre-release 20')" -eq 1 ]; then 
             echo "Release name is valid, creating a tenant (${{ github.event.release.name }})"
-            echo "Release number ($(echo "${{ github.event.release.name }}" | sed 's/Pre-release //'))"
-            echo "RELEASE_NUMBER=$(echo "${{ github.event.release.name }}" | sed 's/Pre-release //')" >> "$GITHUB_OUTPUT"
+            echo "Release number ($(echo "${{ github.event.release.name }}" | | sed -n 's/.* \([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\) .*/\1/p'))"
+            echo "RELEASE_NUMBER=$(echo "${{ github.event.release.name }}" | | sed -n 's/.* \([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\) .*/\1/p')" >> "$GITHUB_OUTPUT"
           else
             echo "Release name is invalid (${{ github.event.release.name}})"
           fi
