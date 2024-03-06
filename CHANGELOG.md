@@ -1,3 +1,12 @@
+## [1.4.1](https://github.com/abdulghani/test-release/compare/v1.4.0...v1.4.1) (2024-03-06)
+
+
+### Bug Fixes
+
+* update script to pick the first ([a2d875e](https://github.com/abdulghani/test-release/commit/a2d875e19b9e48345a5d5b015281f08ded05af5d))
+
+
+
 # [1.4.0](https://github.com/abdulghani/test-release/compare/v1.3.2...v1.4.0) (2024-03-06)
 
 
@@ -49,10 +58,6 @@
 * add bump release ([073592c](https://github.com/abdulghani/test-release/commit/073592c639222c32160d19c6f468aa5cbd0dc607))
 * add changelog generated to pre-release body ([e7d4d76](https://github.com/abdulghani/test-release/commit/e7d4d762821c38d2e6b82a06022a1a747b631f53))
 * push tag and update commit message ([66db25b](https://github.com/abdulghani/test-release/commit/66db25b4c8cb2b20e46441944ed99a48a56883df))
-
-
-
-## [1.0.47](https://github.com/abdulghani/test-release/compare/v1.0.46...v1.0.47) (2024-03-05)
 
 
 
