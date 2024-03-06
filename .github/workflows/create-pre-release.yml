@@ -86,7 +86,6 @@ jobs:
         with:
           tag_name: ${{ steps.extract_version.outputs.version }}
           release_name: Pre-release ${{ env.YEAR }}.${{ env.MONTH }}.${{ env.ITERATION }}
-          body: |
-            Auto generated pre-release for ${{ steps.extract_version.outputs.version }}.
+          body: ${{ steps.bump_version.outputs.clean_changelog }}
           prerelease: true
           draft: false
