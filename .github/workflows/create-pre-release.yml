@@ -10,7 +10,7 @@ on:
     branches:
       - main
 
-# ADD COMMENT
+# ADD COMMENT HERE
 jobs:
   create-pre-release:
     runs-on: ubuntu-latest
