@@ -29,6 +29,12 @@ jobs:
         uses: dcarbone/install-jq-action@v2
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Extract branch ticket name
+        id: ticket_name
+        run: |
+          echo "Branch name: ${{ github.event.head_commit.message }}"
+          echo "Ticket name: $(echo ${{ github.event.head_commit.message }} | grep -o 'BC-[0-9]\+)"
+          echo "TICKET_NAME=$(echo ${{ github.event.head_commit.message }} | grep -o 'BC-[0-9]\+)" >> $GITHUB_OUTPUT
       - name: Bump version
         id: bump_version
         uses: TriPSs/conventional-changelog-action@v5
@@ -83,9 +89,13 @@ jobs:
           YEAR: ${{ steps.current_year.outputs.year }}
           MONTH: ${{ steps.current_year.outputs.month }}
           ITERATION: ${{ steps.iteration_number.outputs.ITERATION }}
+          TICKET_NAME: ${{ steps.ticket_name.outputs.TICKET_NAME }}
         with:
           tag_name: ${{ steps.extract_version.outputs.version }}
-          release_name: Pre-release ${{ env.YEAR }}.${{ env.MONTH }}.${{ env.ITERATION }}
-          body: ${{ steps.bump_version.outputs.clean_changelog }}
+          release_name: Pre-release ${{ env.YEAR }}.${{ env.MONTH }}.${{ env.ITERATION }} (${{ env.TICKET_NAME }})
+          body: |
+            Updates from ${{ env.TICKET_NAME }}
+
+            ${{ steps.bump_version.outputs.clean_changelog }}
           prerelease: true
           draft: false
