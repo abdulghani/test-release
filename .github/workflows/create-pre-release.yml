@@ -14,7 +14,8 @@ on:
 jobs:
   create-pre-release:
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, 'release v')"
+    # MATCH IF THE COMMIT MESSAGE CONTAINS "merge pull request #" AND "feature/BC-" OR "merge branch 'feature/BC-' into main"
+    if: "(contains(github.event.head_commit.message, 'merge pull request #') && contains(github.event.head_commit.message, 'feature/BC-')) || (contains(github.event.head_commit.message, 'merge branch 'feature/BC-') && contains(github.event.head_commit.message, 'into main'))"
     permissions:
       contents: write
     steps:
@@ -34,7 +35,7 @@ jobs:
         with:
           github_token: ${{ secrets.TEST_TOKEN }}
           output_file: "false"
-          git-message: "release v{version}"
+          git-message: "release {version}"
       - name: Extract version
         id: extract_version
         run: |
