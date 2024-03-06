@@ -1,3 +1,18 @@
+# [1.4.0](https://github.com/abdulghani/test-release/compare/v1.3.2...v1.4.0) (2024-03-06)
+
+
+### Bug Fixes
+
+* update extract ticket step ([c18cdce](https://github.com/abdulghani/test-release/commit/c18cdce4439371ecdac78cfe39aa986441c2981f))
+* update extract ticket step ([66991ba](https://github.com/abdulghani/test-release/commit/66991ba149cb2a1e1c5294d4089ef0e542ce1bad))
+
+
+### Features
+
+* update changelog add ticket name ([7c85881](https://github.com/abdulghani/test-release/commit/7c858810a74054947f55d8ca2a5046a7921bf084))
+
+
+
 ## [1.3.2](https://github.com/abdulghani/test-release/compare/v1.3.1...v1.3.2) (2024-03-06)
 
 
@@ -38,10 +53,6 @@
 
 
 ## [1.0.47](https://github.com/abdulghani/test-release/compare/v1.0.46...v1.0.47) (2024-03-05)
-
-
-
-## [1.0.46](https://github.com/abdulghani/test-release/compare/v1.0.45...v1.0.46) (2024-03-05)
 
 
 
