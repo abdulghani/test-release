@@ -19,6 +19,11 @@ jobs:
           echo "${{ github.event.release.tag_name }}"
           echo "${{ github.event.release.tag_name }}" | sed -n 's/^v\([^ ]*\)/\1/p'
           echo "version=$(echo "${{ github.event.release.tag_name }}" | sed -n 's/^v\([^ ]*\)/\1/p')" >> $GITHUB_ENV
+      - name: get ticket name
+        id: ticket_name
+        run: |
+          echo "${{ github.event.release.body }}" | grep -o -i "updates from bc-[0-9]\+" | head -n 1 | grep -o -i "bc-[0-9]\+" | tr '[:lower:]' '[:upper:]'
+          echo "ticket_name=$(echo "${{ github.event.release.body }}" | grep -o -i "updates from bc-[0-9]\+" | head -n 1 | grep -o -i "bc-[0-9]\+" | tr '[:lower:]' '[:upper:]')" >> $GITHUB_OUTPUT
       - name: Validate release name
         id: validate_release_name
         run: |
