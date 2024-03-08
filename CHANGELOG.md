@@ -1,9 +1,14 @@
-## [1.5.3](https://github.com/abdulghani/test-release/compare/v1.5.2...v1.5.3) (2024-03-08)
+# [1.6.0](https://github.com/abdulghani/test-release/compare/v1.5.2...v1.6.0) (2024-03-08)
 
 
 ### Bug Fixes
 
 * update fix ([88f99c5](https://github.com/abdulghani/test-release/commit/88f99c5273f04a6ac8dbf0abc6d8ed5ae4344134))
+
+
+### Features
+
+* update feature ([893ea62](https://github.com/abdulghani/test-release/commit/893ea62829ad20574ee74c494ac35838ece22503))
 
 
 
