@@ -36,14 +36,22 @@ jobs:
           echo "${{ github.event.head_commit.message }}"
           echo "Ticket name: $(echo "${{ github.event.head_commit.message }}" | grep -o 'BC-[0-9]\+' | head -n 1)"
           echo "TICKET_NAME=$(echo "${{ github.event.head_commit.message }}" | grep -o 'BC-[0-9]\+' | head -n 1)" >> $GITHUB_OUTPUT
-      - name: Bump version
-        id: bump_version
-        uses: TriPSs/conventional-changelog-action@v5
+      - name: Automated Version Bump
+        uses: phips28/gh-action-bump-version@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.TEST_TOKEN }}
         with:
-          github_token: ${{ secrets.TEST_TOKEN }}
-          output_file: "false"
-          git-message: "release {version}"
-          create-summary: "true"
+          tag-prefix: "v"
+          commit-message: "release {{version}} [skip ci]"
+          default: minor
+          target-branch: master
+          bump-policy: "last-commit"
+      - name: Create changelog text
+        id: changelog
+        uses: loopwerk/tag-changelog@v1.3.0
+        with:
+          token: ${{ secrets.TEST_TOKEN }}
+          exclude_types: other,chore
       - name: Extract version
         id: extract_version
         run: |
@@ -98,6 +106,6 @@ jobs:
           body: |
             Updates from ${{ env.TICKET_NAME }}
 
-            ${{ steps.bump_version.outputs.clean_changelog }}
+            ${{ steps.changelog.outputs.changes }}
           prerelease: true
           draft: false
