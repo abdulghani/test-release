@@ -14,8 +14,6 @@ on:
 jobs:
   create-pre-release:
     runs-on: ubuntu-latest
-    # MATCH IF THE COMMIT MESSAGE CONTAINS "merge pull request #" AND "feature/BC-" OR "merge branch 'feature/BC-' into main"
-    if: "contains(github.event.head_commit.message, 'merge pull request #') && (contains(github.event.head_commit.message, 'feature/BC-') || contains(github.event.head_commit.message, 'feat/BC-'))"
     permissions:
       contents: write
     steps:
@@ -32,10 +30,16 @@ jobs:
       - name: Extract branch ticket name
         id: ticket_name
         run: |
-          echo "Branch name:"
-          echo "${{ github.event.head_commit.message }}"
-          echo "Ticket name: $(echo "${{ github.event.head_commit.message }}" | grep -o 'BC-[0-9]\+' | head -n 1)"
-          echo "TICKET_NAME=$(echo "${{ github.event.head_commit.message }}" | grep -o 'BC-[0-9]\+' | head -n 1)" >> $GITHUB_OUTPUT
+          RESULT=$(echo "${{ github.event.head_commit.message }}" | grep -i -o 'BC-[0-9]\+')
+          if [ -n "$RESULT" ]; then
+              echo "Branch name: $RESULT"
+              echo "Ticket name: $(echo "${{ github.event.head_commit.message }}" | grep -i -o 'BC-[0-9]\+' | head -n 1 | tr '[:lower:]' '[:upper:]')"
+              echo "TICKET_NAME=$(echo "${{ github.event.head_commit.message }}" | grep -i -o 'BC-[0-9]\+' | head -n 1 | tr '[:lower:]' '[:upper:]')" >> $GITHUB_OUTPUT
+          else
+              echo "Invalid commit message, not containing a ticket name (BC-XXXX)"
+              echo "${{ github.event.head_commit.message }}"
+              echo "TICKET_NAME=$(echo "" >> $GITHUB_OUTPUT
+          fi
       - name: Automated Version Bump
         uses: phips28/gh-action-bump-version@master
         env:
@@ -78,6 +82,11 @@ jobs:
           YEAR: ${{ steps.current_year.outputs.year }}
           MONTH: ${{ steps.current_year.outputs.month }}
         run: |
+          if [ "$TICKET_NAME" == "" ]; then
+            echo "No ticket name found, skipping iteration number"
+            echo "ITERATION=0" >> $GITHUB_OUTPUT
+            exit 0
+          fi        
           if [ "$YEAR" == "$(jq -r '.year' pre-release-number.json)" ] && [ "$MONTH" == "$(jq -r '.month' pre-release-number.json)" ]; then
             echo "Incrementing iteration number"
             jq '.iteration += 1' pre-release-number.json > pre-release-number.json.tmp
@@ -94,6 +103,7 @@ jobs:
           aws s3 cp ./pre-release-number.json s3://pre-release-number/pre-release-number.json
       - name: Create a pre-release
         uses: actions/create-release@v1
+        if: steps.ticket_name.outputs.TICKET_NAME != ''
         env:
           GITHUB_TOKEN: ${{ secrets.TEST_TOKEN }}
           YEAR: ${{ steps.current_year.outputs.year }}
