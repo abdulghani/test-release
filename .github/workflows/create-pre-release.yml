@@ -44,7 +44,7 @@ jobs:
           tag-prefix: "v"
           commit-message: "release {{version}} [skip ci]"
           default: minor
-          target-branch: master
+          target-branch: main
           bump-policy: "last-commit"
       - name: Create changelog text
         id: changelog
