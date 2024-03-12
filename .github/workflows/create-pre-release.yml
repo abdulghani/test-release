@@ -37,7 +37,6 @@ jobs:
               echo "TICKET_NAME=$(echo "${{ github.event.head_commit.message }}" | grep -i -o 'BC-[0-9]\+' | head -n 1 | tr '[:lower:]' '[:upper:]')" >> $GITHUB_OUTPUT
           else
               echo "Invalid commit message, not containing a ticket name (BC-XXXX)"
-              echo "${{ github.event.head_commit.message }}"
           fi
       - name: Automated Version Bump
         uses: phips28/gh-action-bump-version@master
