@@ -30,8 +30,7 @@ jobs:
       - name: Extract branch ticket name
         id: ticket_name
         run: |
-          RESULT=$(echo "${{ github.event.head_commit.message }}" | grep -i -o 'BC-[0-9]\+')
-          exit 0;
+          RESULT=$(echo "${{ github.event.head_commit.message }}" | grep -i -o 'BC-[0-9]\+' > /dev/null)
           if [ -n "$RESULT" ]; then
               echo "Branch name: $RESULT"
               echo "Ticket name: $(echo "${{ github.event.head_commit.message }}" | grep -i -o 'BC-[0-9]\+' | head -n 1 | tr '[:lower:]' '[:upper:]')"
