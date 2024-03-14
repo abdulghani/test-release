@@ -64,9 +64,11 @@ jobs:
       - name: Simulate instance host
         id: instance_host
         run: |
-          RESULT=$(echo "${{ steps.ticket_name.outputs.TICKET_NAME }}-${{ steps.extract_version.outputs.version }}" | tr '[:upper:]' '[:lower:]' | sed 's/-//g')
-          echo "host: $RESULT"
-          echo "host=$(echo "$RESULT")" >> $GITHUB_OUTPUT
+          HOST=$(echo "${{ steps.ticket_name.outputs.TICKET_NAME }}-${{ steps.extract_version.outputs.version }}" | tr '[:upper:]' '[:lower:]' | sed 's/-//g' | sed 's/\.//g')
+          RESULT="https://$HOST-ap.staging.banklync.dev"
+          echo "host: $HOST"
+          echo "result: $RESULT"
+          echo "host=$(echo "https://$RESULT-ap.staging.banklync.dev")" >> $GITHUB_OUTPUT
       - name: Echo extracted version
         run: |
           echo "${{ steps.extract_version.outputs.version }}"
