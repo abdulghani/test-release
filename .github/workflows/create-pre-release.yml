@@ -17,7 +17,7 @@ jobs:
     permissions:
       contents: write
     environment:
-      name: test_instance
+      name: ${{ steps.ticket_name.outputs.TICKET_NAME }}
       url: ${{ steps.instance_host.outputs.host }}
     steps:
       - name: Configure AWS credentials
