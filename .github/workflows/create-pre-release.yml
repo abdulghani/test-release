@@ -59,8 +59,8 @@ jobs:
       - name: Extract version
         id: extract_version
         run: |
-          echo "Current version $(jq -r '.version' package.json)"
-          echo "version=$(jq -r '.version' package.json)" >> $GITHUB_OUTPUT
+          echo "Current version v$(jq -r '.version' package.json)"
+          echo "version=v$(jq -r '.version' package.json)" >> $GITHUB_OUTPUT
       - name: Simulate instance host
         id: instance_host
         run: |
