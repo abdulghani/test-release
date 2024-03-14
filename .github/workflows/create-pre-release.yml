@@ -30,7 +30,7 @@ jobs:
       - name: Extract branch ticket name
         id: ticket_name
         run: |
-          RESULT=$(echo "${{ github.event.head_commit.message }}" | grep -i -o 'BC-[0-9]\+' || echo "")
+          RESULT=$(echo "${{ github.event.head_commit.message }}" | grep -i '^merge' | grep -i -o 'BC-[0-9]\+' || echo "")
           if [ "$RESULT" != "" ]; then
               echo "Branch name: $RESULT"
               echo "Ticket name: $(echo "${{ github.event.head_commit.message }}" | grep -i -o 'BC-[0-9]\+' | head -n 1 | tr '[:lower:]' '[:upper:]')"
@@ -61,12 +61,20 @@ jobs:
         run: |
           echo "Current version $(jq -r '.version' package.json)"
           echo "version=$(jq -r '.version' package.json)" >> $GITHUB_OUTPUT
+      - name: Simulate instance host
+        id: instance_host
+        run: |
+          RESULT=$(echo "${{ steps.ticket_name.outputs.TICKET_NAME }}-${{ steps.extract_version.outputs.version }}" | tr '[:upper:]' '[:lower:]' | sed 's/-//g')
+          echo "host: $RESULT"
+          echo "host=$(echo "$RESULT")" >> $GITHUB_OUTPUT
       - name: Echo extracted version
         run: |
           echo "${{ steps.extract_version.outputs.version }}"
           echo "${{ github.event.head_commit.message }}"
           echo "CHANGELOG"
           echo "${{ steps.bump_version.outputs.clean_changelog }}"
+          echo "HOST"
+          echo "${{ steps.instance_host.outputs.host }}"
       - name: Get current year
         id: current_year
         uses: Kaven-Universe/github-action-current-date-time@v1.4.0
@@ -100,6 +108,10 @@ jobs:
           echo "ITERATION=$(jq ".iteration" pre-release-number.json)" >> $GITHUB_OUTPUT
       - name: Upload iteration artifact
         run: |
+          if [ "$TICKET_NAME" == "" ]; then
+            echo "No ticket name found, skipping iteration number"
+            exit 0
+          fi           
           aws s3 cp ./pre-release-number.json s3://pre-release-number/pre-release-number.json
       - name: Create a pre-release
         uses: actions/create-release@v1
@@ -117,5 +129,8 @@ jobs:
             Updates from ${{ env.TICKET_NAME }}
 
             ${{ steps.changelog.outputs.changes }}
+
+            Tenant instance (subject to modification):
+            ${{ steps.instance_host.outputs.host }}
           prerelease: true
           draft: false
