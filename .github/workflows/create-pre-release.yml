@@ -68,7 +68,7 @@ jobs:
           RESULT="https://$HOST-ap.staging.banklync.dev"
           echo "host: $HOST"
           echo "result: $RESULT"
-          echo "host=$(echo "https://$RESULT-ap.staging.banklync.dev")" >> $GITHUB_OUTPUT
+          echo "host=$(echo "$RESULT")" >> $GITHUB_OUTPUT
       - name: Echo extracted version
         run: |
           echo "${{ steps.extract_version.outputs.version }}"
