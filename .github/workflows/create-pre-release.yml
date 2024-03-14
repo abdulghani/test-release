@@ -18,7 +18,7 @@ jobs:
       contents: write
     environment:
       name: test_instance
-      url: ${{ steps.instance_host.outputs.result }}
+      url: ${{ steps.instance_host.outputs.host }}
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
