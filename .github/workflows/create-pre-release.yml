@@ -60,7 +60,7 @@ jobs:
           token: ${{ secrets.TEST_TOKEN }}
           exclude_types: other,chore
       - name: Extract current commit
-        if: extract_commit
+        id: extract_commit
         run: |
           CURRENT_COMMIT="$(git rev-parse HEAD)"
           echo "current commit ($(git rev-parse HEAD))"
