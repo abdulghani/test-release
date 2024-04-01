@@ -17,7 +17,7 @@ jobs:
     permissions:
       contents: write
     environment:
-      name: ${{ steps.instance_host.outputs.host }}
+      name: test_instance
       url: ${{ steps.instance_host.outputs.host }}
     steps:
       - name: Configure AWS credentials
@@ -59,6 +59,13 @@ jobs:
         with:
           token: ${{ secrets.TEST_TOKEN }}
           exclude_types: other,chore
+      - name: Extract current commit
+        if: extract_commit
+        run: |
+          CURRENT_COMMIT="$(git rev-parse HEAD)"
+          echo "current commit ($(git rev-parse HEAD))"
+          echo "$(git log -1 --pretty=%B $CURRENT_COMMIT)"
+          echo "commit=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
       - name: Extract version
         id: extract_version
         run: |
@@ -129,6 +136,7 @@ jobs:
           TICKET_NAME: ${{ steps.ticket_name.outputs.TICKET_NAME }}
         with:
           tag_name: ${{ steps.extract_version.outputs.version }}
+          commitish: ${{ steps.extract_commit.outputs.commit }}
           release_name: Pre-release ${{ env.YEAR }}.${{ env.MONTH }}.${{ env.ITERATION }} (${{ env.TICKET_NAME }})
           body: |
             Updates from ${{ env.TICKET_NAME }}
